@@ -2,7 +2,7 @@ from mapsJson import get_best_restaurant
 import unittest
 
 class TestRestaurants(unittest.TestCase):
-    
+
     def test_best_restaurant_1(self):
         restaurants = [
             {"rating": 5.0, "name": "Restr Five"},
@@ -36,8 +36,12 @@ class TestRestaurants(unittest.TestCase):
         r = get_best_restaurant(restaurants)
         self.assertEqual(r["name"], "Restr Five")
 
+    def test_best_restaurant_4(self):
+        restaurants = []
+        r = get_best_restaurant(restaurants)
+        self.assertEqual(r, None)
+
+
 
 if __name__ == '__main__':
     unittest.main()
-
-

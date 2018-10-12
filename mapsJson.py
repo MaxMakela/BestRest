@@ -1,22 +1,21 @@
 import googlemaps
 import pdb
 import json
+import time
 
 
 def get_best_restaurant(rests):
-    n = 0
-    while n < len(rests):
-        i = 0
-        while i < len(rests):
-            buf = 0
-            if (i+1) < len(rests):
-                if rests[i]['rating'] > rests[i+1]['rating']:
-                    buf = rests[i]
-                    rests[i] = rests[i+1]
-                    rests[i+1] = buf
-            i += 1
-        n += 1
-    return rests[len(rests)-1]
+    if not rests:
+        return None
+
+    buf=rests[0]
+
+    for res in rests:
+        if 'rating' in res and res['rating'] > buf['rating']:
+                buf = res
+
+    return buf
+
 
 
 if __name__ == '__main__':
@@ -27,6 +26,7 @@ if __name__ == '__main__':
 
     loc = result[0]['geometry']['location']
     pl = gmaps.places_nearby(loc, 5000, type='restaurant')
+    #time.sleep(2)
 
     best = get_best_restaurant(pl['results'])
     print(best['name'] + ' ' + str(best['rating']))
