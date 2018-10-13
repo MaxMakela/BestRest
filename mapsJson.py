@@ -4,6 +4,23 @@ import json
 import time
 
 
+def sort_by_best_rating(res):
+    if 'rating' in res:
+        return res['rating']
+    else:
+        return 0
+
+def get_top_best_restaurant(rests, num):
+    if not rests:
+        return None
+
+    if num <= 0:
+        num = 1
+
+    rests.sort(key=sort_by_best_rating, reverse=True)
+    return rests[0:num]
+
+
 def get_best_restaurant(rests):
     if not rests:
         return None
@@ -17,34 +34,27 @@ def get_best_restaurant(rests):
     return buf
 
 
-
 if __name__ == '__main__':
     gmaps = googlemaps.Client(key='AIzaSyDmECqKm1tLn3NggSC-WdsAmpchRyT1bWY')
-    result = gmaps.geocode('Ukraine, Kiev')
+    result = gmaps.geocode('Ukraine, Sumy')
 
     # pdb.set_trace()
 
     loc = result[0]['geometry']['location']
     pl = gmaps.places_nearby(loc, 5000, type='restaurant')
     rest_list=pl['results']
-    n=0
 
     while 'next_page_token' in pl:
         time.sleep(2)
-        #print(pl['next_page_token'])
         pl = gmaps.places_nearby(loc, 5000, type='restaurant', page_token=pl['next_page_token'])
-        #print(pl)
-        rest_list.append(pl['results'])
-        n+=1
-    #print(rest_list)
+        rest_list += pl['results']
 
-    print(len(rest_list))
-    print(n)
-    best = get_best_restaurant(rest_list)
-    print(best['name'] + ' ' + str(best['rating']))
+    best = get_top_best_restaurant(rest_list, 10)
+    for res in best:
+        print(res['name'] + ' ' + str(res['rating']))
+
     # вывод всего списка имен
-
-    #n = 0
-    #while n<=(len(rest_list)-1):
+    # n = 0
+    # while n<=(len(rest_list)-1):
     #    print(str(n+1)+'.'+rest_list[n]+' '+str(rest_list[n]['rating']))
     #    n += 1
