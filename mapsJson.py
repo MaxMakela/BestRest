@@ -4,6 +4,17 @@ import json
 import time
 
 
+def sort_by_best_rating(res):
+    return res['rating']
+
+def get_top_best_restaurant(rests,num):
+    if not rests:
+        return None
+
+    rests.sort(key=sort_by_best_rating, reverse=True)
+    return rests[0:num]
+
+
 def get_best_restaurant(rests):
     if not rests:
         return None
@@ -30,17 +41,14 @@ if __name__ == '__main__':
 
     while 'next_page_token' in pl:
         time.sleep(2)
-        #print(pl['next_page_token'])
         pl = gmaps.places_nearby(loc, 5000, type='restaurant', page_token=pl['next_page_token'])
-        #print(pl)
-        rest_list+=pl['results']
-    #print(rest_list)
+        rest_list += pl['results']
 
-    print(len(rest_list))
-    best = get_best_restaurant(rest_list)
-    print(best['name'] + ' ' + str(best['rating']))
+    best = get_top_best_restaurant(rest_list,10)
+    for res in best:
+        print(res['name'] + ' ' + str(res['rating']))
+
     # вывод всего списка имен
-
     #n = 0
     #while n<=(len(rest_list)-1):
     #    print(str(n+1)+'.'+rest_list[n]+' '+str(rest_list[n]['rating']))
