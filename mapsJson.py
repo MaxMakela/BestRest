@@ -20,26 +20,23 @@ def get_best_restaurant(rests):
 
 if __name__ == '__main__':
     gmaps = googlemaps.Client(key='AIzaSyDmECqKm1tLn3NggSC-WdsAmpchRyT1bWY')
-    result = gmaps.geocode('Ukraine, Kiev')
+    result = gmaps.geocode('Ukraine, Sumy')
 
     # pdb.set_trace()
 
     loc = result[0]['geometry']['location']
     pl = gmaps.places_nearby(loc, 5000, type='restaurant')
     rest_list=pl['results']
-    n=0
 
     while 'next_page_token' in pl:
         time.sleep(2)
         #print(pl['next_page_token'])
         pl = gmaps.places_nearby(loc, 5000, type='restaurant', page_token=pl['next_page_token'])
         #print(pl)
-        rest_list.append(pl['results'])
-        n+=1
+        rest_list+=pl['results']
     #print(rest_list)
 
     print(len(rest_list))
-    print(n)
     best = get_best_restaurant(rest_list)
     print(best['name'] + ' ' + str(best['rating']))
     # вывод всего списка имен
