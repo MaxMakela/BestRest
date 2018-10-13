@@ -17,11 +17,8 @@ def get_top_best_restaurant(rests, num):
     if num <= 0:
         num = 1
 
-    # if 'rating' in res:
     rests.sort(key=sort_by_best_rating, reverse=True)
     return rests[0:num]
-    # else:
-       # return None
 
 
 def get_best_restaurant(rests):
