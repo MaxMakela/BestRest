@@ -5,15 +5,23 @@ import time
 
 
 def sort_by_best_rating(res):
-    #if 'rating' in res:
+    if 'rating' in res:
         return res['rating']
+    else:
+        return 0
 
-def get_top_best_restaurant(rests,num):
+def get_top_best_restaurant(rests, num):
     if not rests:
         return None
 
+    if num <= 0:
+        num = 1
+
+    # if 'rating' in res:
     rests.sort(key=sort_by_best_rating, reverse=True)
     return rests[0:num]
+    # else:
+       # return None
 
 
 def get_best_restaurant(rests):
@@ -27,7 +35,6 @@ def get_best_restaurant(rests):
                 buf = res
 
     return buf
-
 
 
 if __name__ == '__main__':
@@ -45,12 +52,12 @@ if __name__ == '__main__':
         pl = gmaps.places_nearby(loc, 5000, type='restaurant', page_token=pl['next_page_token'])
         rest_list += pl['results']
 
-    best = get_top_best_restaurant(rest_list,10)
+    best = get_top_best_restaurant(rest_list, 10)
     for res in best:
         print(res['name'] + ' ' + str(res['rating']))
 
     # вывод всего списка имен
-    #n = 0
-    #while n<=(len(rest_list)-1):
+    # n = 0
+    # while n<=(len(rest_list)-1):
     #    print(str(n+1)+'.'+rest_list[n]+' '+str(rest_list[n]['rating']))
     #    n += 1
