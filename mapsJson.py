@@ -5,7 +5,8 @@ import time
 
 
 def sort_by_best_rating(res):
-    return res['rating']
+    #if 'rating' in res:
+        return res['rating']
 
 def get_top_best_restaurant(rests,num):
     if not rests:
