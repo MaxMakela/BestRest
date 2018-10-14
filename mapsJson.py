@@ -5,17 +5,14 @@ import time
 
 
 def sort_by_best_rating(res):
-    if 'rating' in res:
-        return res['rating']
-    else:
-        return 0
+    return res.get('rating', 0)
+
 
 def get_top_best_restaurant(rests, num):
     if not rests:
         return None
 
-    if num <= 0:
-        num = 1
+    assert num > 0, "Num should be a positive number"
 
     rests.sort(key=sort_by_best_rating, reverse=True)
     return rests[0:num]
@@ -25,13 +22,7 @@ def get_best_restaurant(rests):
     if not rests:
         return None
 
-    buf=rests[0]
-
-    for res in rests:
-        if 'rating' in res and res['rating'] > buf['rating']:
-                buf = res
-
-    return buf
+    return max(rests, key=sort_by_best_rating)
 
 
 if __name__ == '__main__':
@@ -51,10 +42,4 @@ if __name__ == '__main__':
 
     best = get_top_best_restaurant(rest_list, 10)
     for res in best:
-        print(res['name'] + ' ' + str(res['rating']))
-
-    # вывод всего списка имен
-    # n = 0
-    # while n<=(len(rest_list)-1):
-    #    print(str(n+1)+'.'+rest_list[n]+' '+str(rest_list[n]['rating']))
-    #    n += 1
+        print('{1} {0}'.format(res['name'], res['rating']))
